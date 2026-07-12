@@ -1,13 +1,11 @@
 @font-face {
     font-family: "STZhongsong";
-    src: url("../fonts/华文中宋.ttf") format("truetype");
+    src: url("../fonts/STZhongsong.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 
 :root {
-    --primary-bg: #f5f5f5;
-    --card-bg: #ffffff;
     --text-main: #333333;
     --text-muted: #888888;
     --accent-color: #6a7985;
@@ -21,31 +19,46 @@
 
 body {
     font-family: "STZhongsong", "PingFang SC", "Microsoft YaHei", "Songti SC", serif;
-    background-color: var(--primary-bg);
     color: var(--text-main);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: url("../images/bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
 header {
     margin: 50px 0 30px 0;
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 header h1 {
     font-size: 2.5rem;
-    color: var(--text-main);
+    color: #fff;
     margin: 0;
     letter-spacing: 6px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 header p {
-    color: var(--accent-color);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 1rem;
     margin-top: 10px;
     letter-spacing: 2px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }
 
 .grid-container {
@@ -55,28 +68,34 @@ header p {
     width: 90%;
     max-width: 1200px;
     padding: 20px 0 60px 0;
+    position: relative;
+    z-index: 1;
 }
 
 .audio-card {
-    background-color: var(--card-bg);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     padding: 24px;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 .audio-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.35);
 }
 
 .card-date {
     font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    border-bottom: 1px dashed #eee;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 16px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
     padding-bottom: 10px;
 }
 
@@ -87,18 +106,20 @@ audio {
 }
 
 audio::-webkit-media-controls-panel {
-    background-color: #f1f3f4;
+    background-color: rgba(241, 243, 244, 0.8);
 }
 
 footer {
     text-align: center;
     padding: 32px 20px 40px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
     font-size: 0.8rem;
-    color: #bbb;
+    color: rgba(255, 255, 255, 0.7);
     letter-spacing: 3px;
     width: 90%;
     max-width: 1200px;
+    position: relative;
+    z-index: 1;
 }
 
 @media (max-width: 600px) {
