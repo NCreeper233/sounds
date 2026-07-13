@@ -5,6 +5,7 @@ const audioDataList = [
 ];
 
 const gridContainer = document.getElementById("audioGrid");
+const allAudioElements = [];
 
 function renderAudioCards(dataArray) {
     dataArray.forEach(item => {
@@ -19,6 +20,8 @@ function renderAudioCards(dataArray) {
         audioEl.controls = true;
         audioEl.src = item.src;
 
+        allAudioElements.push(audioEl);
+
         card.appendChild(dateEl);
         card.appendChild(audioEl);
 
@@ -28,4 +31,11 @@ function renderAudioCards(dataArray) {
 
 document.addEventListener("DOMContentLoaded", () => {
     renderAudioCards(audioDataList);
+
+    document.getElementById("playAllBtn").addEventListener("click", () => {
+        allAudioElements.forEach(audio => {
+            audio.currentTime = 0;
+            audio.play();
+        });
+    });
 });
