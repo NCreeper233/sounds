@@ -1,7 +1,5 @@
 const audioDataList = [
-    { date: "XXXX年XX月XX日 星期X XX:XX", src: "sounds/65.mp3" },
-    { date: "XXXX年XX月XX日 星期X XX:XX", src: "sounds/202607051140.mp3" },
-    { date: "XXXX年XX月XX日 星期X XX:XX", src: "sounds/202607022242.mp3" },
+    { date: "2026年7月12日 星期日 23:27", src: "sounds/Desktop 2026.07.13 - 08.09.10.01.mp3" },
 ];
 
 const gridContainer = document.getElementById("audioGrid");
