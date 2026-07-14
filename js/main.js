@@ -5,6 +5,8 @@ const audioDataList = [
     { date: "2026年7月13日 星期一 17:05", src: "sounds/Desktop 2026.07.13 - 17.49.55.04.mp3" },
     { date: "2026年7月13日 星期一 17:17", src: "sounds/Desktop 2026.07.13 - 17.50.33.05.mp3" },
     { date: "2026年7月13日 星期一 19:12", src: "sounds/Desktop 2026.07.13 - 19.13.00.06.mp3" },
+    { date: "2026年7月14日 星期二 14:01", src: "sounds/Desktop 2026.07.14 - 14.01.38.01.mp3" },
+    { date: "2026年7月14日 星期二 14:04", src: "sounds/Desktop 2026.07.14 - 14.04.41.02.mp3" },
 ];
 
 const gridContainer = document.getElementById("audioGrid");
