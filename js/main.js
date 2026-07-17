@@ -21,10 +21,7 @@ const audioDataList = [
 ];
 
 const gridContainer = document.getElementById("audioGrid");
-const allAudioElements = [    { date: "2026年7月17日 星期五 14:31", src: "sounds/Desktop 2026.07.17 - 17.23.20.03.ogg" },
-    { date: "2026年7月17日 星期五 17:18", src: "sounds/Desktop 2026.07.17 - 17.23.32.04.ogg" },
-    { date: "2026年7月17日 星期五 17:22", src: "sounds/Desktop 2026.07.17 - 17.23.43.05.ogg" },
-];
+const allAudioElements = [];
 
 function renderAudioCards(dataArray) {
     dataArray.forEach(item => {
