@@ -20,36 +20,36 @@ const audioDataList = [
     { date: "2026年7月17日 星期五 17:22", src: "sounds/Desktop 2026.07.17 - 17.23.43.05.ogg" },
 ];
 
-const gridContainer = document.getElementById("audioGrid");
-const allAudioElements = [];
-
-function renderAudioCards(dataArray) {
-    dataArray.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "audio-card";
-
-        const dateEl = document.createElement("div");
-        dateEl.className = "card-date";
-        dateEl.textContent = item.date;
-
-        const audioEl = document.createElement("audio");
-        audioEl.controls = true;
-        audioEl.src = item.src;
-
-        allAudioElements.push(audioEl);
-
-        card.appendChild(dateEl);
-        card.appendChild(audioEl);
-
-        gridContainer.appendChild(card);
-    });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
+    const gridContainer = document.getElementById("audioGrid");
+    const audioElements = [];
+
+    function renderAudioCards(dataArray) {
+        dataArray.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "audio-card";
+
+            const dateEl = document.createElement("div");
+            dateEl.className = "card-date";
+            dateEl.textContent = item.date;
+
+            const audioEl = document.createElement("audio");
+            audioEl.controls = true;
+            audioEl.src = item.src;
+
+            audioElements.push(audioEl);
+
+            card.appendChild(dateEl);
+            card.appendChild(audioEl);
+
+            gridContainer.appendChild(card);
+        });
+    }
+
     renderAudioCards(audioDataList);
 
     document.getElementById("playAllBtn").addEventListener("click", () => {
-        allAudioElements.forEach(audio => {
+        audioElements.forEach(audio => {
             audio.currentTime = 0;
             audio.play();
         });
