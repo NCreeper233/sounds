@@ -15,10 +15,16 @@ const audioDataList = [
     { date: "2026年7月16日 星期四 13:40", src: "sounds/Desktop 2026.07.16 - 14.31.11.02.ogg" },
     { date: "2026年7月16日 星期四 14:15", src: "sounds/Desktop 2026.07.16 - 14.31.20.03.ogg" },
     { date: "2026年7月17日 星期五 11:40", src: "sounds/Desktop 2026.07.17 - 11.46.12.02.ogg" },
+    { date: "2026年7月17日 星期五 14:31", src: "sounds/Desktop 2026.07.17 - 17.23.20.03.ogg" },
+    { date: "2026年7月17日 星期五 17:18", src: "sounds/Desktop 2026.07.17 - 17.23.32.04.ogg" },
+    { date: "2026年7月17日 星期五 17:22", src: "sounds/Desktop 2026.07.17 - 17.23.43.05.ogg" },
 ];
 
 const gridContainer = document.getElementById("audioGrid");
-const allAudioElements = [];
+const allAudioElements = [    { date: "2026年7月17日 星期五 14:31", src: "sounds/Desktop 2026.07.17 - 17.23.20.03.ogg" },
+    { date: "2026年7月17日 星期五 17:18", src: "sounds/Desktop 2026.07.17 - 17.23.32.04.ogg" },
+    { date: "2026年7月17日 星期五 17:22", src: "sounds/Desktop 2026.07.17 - 17.23.43.05.ogg" },
+];
 
 function renderAudioCards(dataArray) {
     dataArray.forEach(item => {
