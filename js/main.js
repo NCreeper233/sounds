@@ -18,6 +18,7 @@ const audioDataList = [
     { date: "2026年7月17日 星期五 14:31", src: "sounds/Desktop 2026.07.17 - 17.23.20.03.ogg" },
     { date: "2026年7月17日 星期五 17:18", src: "sounds/Desktop 2026.07.17 - 17.23.32.04.ogg" },
     { date: "2026年7月17日 星期五 17:22", src: "sounds/Desktop 2026.07.17 - 17.23.43.05.ogg" },
+    { date: "2026年7月18日 星期六 19:18", src: "sounds/Desktop 2026.07.18 - 19.19.38.05.ogg" },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
