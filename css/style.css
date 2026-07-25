@@ -1,40 +1,56 @@
+/*
+ * 千音雅集 样式表
+ * 设计风格：毛玻璃（Glassmorphism）+ 全屏背景图
+ */
+
+/* ---------- 字体 ---------- */
+/* STZhongsong（华文中宋）为站点标题使用的装饰性字体 */
 @font-face {
     font-family: "STZhongsong";
     src: url("../fonts/STZhongsong.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
+    font-display: swap;   /* 字体加载期间优先使用后备字体显示文字，避免 FOIT（Flash of Invisible Text） */
 }
 
+/* ---------- CSS 变量 ---------- */
 :root {
     --text-main: #333333;
     --text-muted: #888888;
     --accent-color: #6a7985;
 }
 
+/* ---------- 基础重置 ---------- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ---------- 页面主体 ---------- */
 body {
+    /* 字体栈：STZhongsong 加载完成后会替换后备字体 */
     font-family: "STZhongsong", "PingFang SC", "Microsoft YaHei", "Songti SC", serif;
     color: var(--text-main);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    /* 全屏固定背景图，背景色只在图片加载前可见 */
     background: url("../images/bg.webp") no-repeat center center fixed;
     background-size: cover;
 }
 
+/* ---------- 页面头部 ---------- */
 header {
     margin: 50px 0 30px 0;
     text-align: center;
     position: relative;
-    z-index: 1;
+    z-index: 1;           /* 确保文字显示在 canvas-nest 粒子效果上方 */
 }
 
+/* 站点标题 —— 同时也是"全部正放"按钮 */
 header h1 {
     font-size: 2.5rem;
     color: #fff;
@@ -43,21 +59,30 @@ header h1 {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: opacity 0.3s;
-    user-select: none;
+    user-select: none;    /* 防止双击选中文字 */
 }
 
 header h1:hover {
     opacity: 0.7;
 }
 
+/* 副标题 —— "全部倒放"按钮 */
 header p {
     color: rgba(255, 255, 255, 0.85);
     font-size: 1rem;
     margin-top: 10px;
     letter-spacing: 2px;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.3s;
 }
 
+header p:hover {
+    opacity: 0.7;
+}
+
+/* ---------- 音频卡片网格 ---------- */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -69,10 +94,11 @@ header p {
     z-index: 1;
 }
 
+/* ---------- 单张卡片（毛玻璃效果） ---------- */
 .audio-card {
     background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);         /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(16px); /* Safari 兼容 */
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 16px;
     padding: 24px;
@@ -80,15 +106,16 @@ header p {
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    will-change: transform;
+    will-change: transform;              /* 提示浏览器提前创建合成层，提升动画性能 */
 }
 
 .audio-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px);          /* 悬停时轻微上浮 */
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     background: rgba(255, 255, 255, 0.35);
 }
 
+/* 卡片内的日期标签 */
 .card-date {
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.9);
@@ -97,16 +124,19 @@ header p {
     padding-bottom: 10px;
 }
 
+/* ---------- 浏览器原生音频控件 ---------- */
 audio {
     width: 100%;
     outline: none;
-    margin-top: auto;
+    margin-top: auto;       /* 使控件贴底，日期在上方 */
 }
 
+/* Chrome 音频控制面板背景透明化，与毛玻璃风格统一 */
 audio::-webkit-media-controls-panel {
     background-color: rgba(241, 243, 244, 0.8);
 }
 
+/* ---------- 页脚 ---------- */
 footer {
     text-align: center;
     padding: 32px 20px 40px;
@@ -120,6 +150,7 @@ footer {
     z-index: 1;
 }
 
+/* ---------- 响应式（小屏幕） ---------- */
 @media (max-width: 600px) {
     header h1 { font-size: 1.8rem; letter-spacing: 4px; }
     .grid-container { grid-template-columns: 1fr; gap: 20px; }
