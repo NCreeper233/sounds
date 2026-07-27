@@ -142,19 +142,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         function onStop() { syncMouth(); }
 
-        function bind(a) {
+        audioElements.forEach(a => {
             a.addEventListener('play', onPlay);
             a.addEventListener('ended', onStop);
             a.addEventListener('pause', onStop);
-        }
-
-        audioElements.forEach(bind);
+        });
 
         /* ----- Matter.js（页面坐标系） ----- */
         const M = Matter;
         const engine = M.Engine.create({ gravity: { x: 0, y: 0.8 } });
         let body, mouseConstraint, mouse;
-        let gridObs;
         const barStates = [];
         const kkStates = [{ el, inner, isOriginal: true }];
         const BW = 180, BH = 14;
@@ -293,17 +290,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener('resize', () => {
             clearTimeout(rt); rt = setTimeout(rebuild, 150);
         });
-        gridObs = new MutationObserver(() => {
-            document.querySelectorAll('audio:not([data-kk])').forEach(a => {
-                a.dataset.kk = '1';
-                bind(a);
-            });
-            rebuild();
-        });
-        gridObs.observe(document.getElementById('audioGrid'), {
-            childList: true, subtree: true
-        });
-
         function loop() {
             M.Engine.update(engine, 1000 / 60);
             for (const ks of kkStates) {
