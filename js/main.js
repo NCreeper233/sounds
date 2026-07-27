@@ -37,7 +37,35 @@ const audioDataList = [
     { date: "2026年7月25日 星期六 16:03", src: "sounds/Desktop 2026.07.25 - 17.06.16.04.ogg" },
     { date: "2026年7月25日 星期六 16:09", src: "sounds/Desktop 2026.07.25 - 17.06.28.05.ogg" },
     { date: "2026年7月25日 星期六 16:28", src: "sounds/Desktop 2026.07.25 - 17.06.38.06.ogg" },
+    { date: "2026年7月26日 星期日 22:23", src: "sounds/Desktop 2026.07.27 - 20.37.07.03.ogg" },
+    { date: "2026年7月26日 星期日 23:10", src: "sounds/Desktop 2026.07.27 - 20.37.21.04.ogg" },
+    { date: "2026年7月27日 星期一 15:08", src: "sounds/Desktop 2026.07.27 - 20.37.47.05.ogg" },
+    { date: "2026年7月27日 星期一 16:42", src: "sounds/Desktop 2026.07.27 - 20.38.01.06.ogg" },
+    { date: "2026年7月27日 星期一 16:43", src: "sounds/Desktop 2026.07.27 - 20.38.09.07.ogg" },
+    { date: "2026年7月27日 星期一 16:44", src: "sounds/Desktop 2026.07.27 - 20.38.22.08.ogg" },
+    { date: "2026年7月27日 星期一 17:11", src: "sounds/Desktop 2026.07.27 - 20.38.32.09.ogg" },
 ];
+
+const MILESTONES = [
+    { threshold: 500, title: "大丨成丨至丨雅" },
+    { threshold: 450, title: "凤丨箫丨声丨动" },
+    { threshold: 400, title: "金丨石丨丝丨竹" },
+    { threshold: 350, title: "八丨音丨和丨鸣" },
+    { threshold: 300, title: "天丨籁丨之丨音" },
+    { threshold: 250, title: "高丨山丨流丨水" },
+    { threshold: 200, title: "余丨音丨绕丨梁" },
+    { threshold: 150, title: "渐丨入丨佳丨境" },
+    { threshold: 100, title: "大丨雅丨之丨堂" },
+    { threshold: 50,  title: "初丨窥丨门丨径" },
+    { threshold: 0,   title: "空丨谷丨足丨音" },
+];
+
+function getStage(count) {
+    for (const m of MILESTONES) {
+        if (count >= m.threshold) return m.title;
+    }
+    return "空丨谷丨足丨音";
+}
 
 /**
  * DOM 就绪后初始化页面
@@ -76,6 +104,232 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderAudioCards(audioDataList);
+
+    {
+        const n = audioDataList.length;
+        if (n > 0) {
+            const parts = audioDataList[n - 1].date.split(" ");
+            document.getElementById("startBtn").textContent =
+                `截至${parts[0]} ${parts[2]}，已收录${n}条雅音`;
+        }
+    }
+
+    document.getElementById("stageDisplay").textContent =
+        getStage(audioDataList.length);
+
+    /* ---------- kk 物理 ---------- */
+    (function initKK() {
+        const el = document.getElementById('kk');
+        const inner = document.getElementById('kk-inner');
+
+        function syncMouth() {
+            const anyPlaying = audioElements.some(a => !a.paused);
+            document.querySelectorAll('.kk-inner').forEach(el => {
+                el.classList.toggle('kk-open', anyPlaying);
+            });
+        }
+
+        function onPlay() {
+            syncMouth();
+            for (const ks of kkStates) {
+                if (ks.body) {
+                    M.Body.setVelocity(ks.body, {
+                        x: ks.body.velocity.x + (Math.random() - 0.5) * 3,
+                        y: Math.max(ks.body.velocity.y - 5, -10)
+                    });
+                }
+            }
+        }
+        function onStop() { syncMouth(); }
+
+        function bind(a) {
+            a.addEventListener('play', onPlay);
+            a.addEventListener('ended', onStop);
+            a.addEventListener('pause', onStop);
+        }
+
+        audioElements.forEach(bind);
+
+        /* ----- Matter.js（页面坐标系） ----- */
+        const M = Matter;
+        const engine = M.Engine.create({ gravity: { x: 0, y: 0.8 } });
+        let body, mouseConstraint, mouse;
+        let gridObs;
+        const barStates = [];
+        const kkStates = [{ el, inner, isOriginal: true }];
+        const BW = 180, BH = 14;
+        let started = false;
+
+        function docH() {
+            return Math.max(
+                document.documentElement.scrollHeight,
+                document.body.scrollHeight,
+                window.innerHeight + 200
+            );
+        }
+
+        function rebuild() {
+            if (!started) return;
+            document.querySelectorAll('.glass-bar').forEach(el => el.remove());
+            document.querySelectorAll('.kk-clone').forEach(el => el.remove());
+            M.World.clear(engine.world, false);
+
+            const iw = window.innerWidth, dh = docH();
+            const w = parseInt(getComputedStyle(el).width) || 100;
+            const h = w;
+            const floorY = dh;
+
+            const clonePositions = [];
+            for (let i = 1; i < kkStates.length; i++) {
+                const ks = kkStates[i];
+                if (ks.body) clonePositions.push({ x: ks.body.position.x, y: ks.body.position.y });
+            }
+            kkStates.length = 1;
+            kkStates[0].body = null;
+
+            const initY = Math.min(window.scrollY + 80, floorY - 60);
+            body = M.Bodies.rectangle(iw - 74, initY, w, h, {
+                restitution: 0.55, friction: 0.08, frictionAir: 0.015,
+                density: 0.002, chamfer: { radius: 8 }
+            });
+            kkStates[0].body = body;
+
+            const wo = { isStatic: true, restitution: 0.4, friction: 0.3 };
+            const ground = M.Bodies.rectangle(iw / 2, floorY + 35, iw * 2, 70, wo);
+            const left   = M.Bodies.rectangle(-35, dh / 2, 70, dh * 2, wo);
+            const right  = M.Bodies.rectangle(iw + 35, dh / 2, 70, dh * 2, wo);
+            M.World.add(engine.world, [body, ground, left, right]);
+
+            for (const p of clonePositions) addKKClone(p.x, p.y);
+
+            for (const s of barStates) {
+                const b = M.Bodies.rectangle(s.x, s.y, BW, BH, {
+                    isStatic: true, restitution: 0.3, friction: 0.2, chamfer: { radius: 6 }
+                });
+                M.World.add(engine.world, b);
+                s.body = b;
+                const dom = document.createElement('div');
+                dom.className = 'glass-bar';
+                dom.style.left = (s.x - BW / 2) + 'px';
+                dom.style.top = (s.y - BH / 2) + 'px';
+                document.body.appendChild(dom);
+                s.el = dom;
+            }
+
+            mouse = M.Mouse.create(document.body);
+            mouseConstraint = M.MouseConstraint.create(engine, {
+                mouse, constraint: { stiffness: 0.15, render: { visible: false } }
+            });
+            M.World.add(engine.world, mouseConstraint);
+        }
+
+        function addBarAt(px, py) {
+            const s = { x: px, y: py };
+            barStates.push(s);
+            const b = M.Bodies.rectangle(px, py, BW, BH, {
+                isStatic: true, restitution: 0.3, friction: 0.2, chamfer: { radius: 6 }
+            });
+            M.World.add(engine.world, b);
+            s.body = b;
+            const dom = document.createElement('div');
+            dom.className = 'glass-bar';
+            dom.style.left = (px - BW / 2) + 'px';
+            dom.style.top = (py - BH / 2) + 'px';
+            document.body.appendChild(dom);
+            s.el = dom;
+        }
+
+        function addKKClone(x, y) {
+            const iw = window.innerWidth, dh = docH();
+            const w = parseInt(getComputedStyle(el).width) || 100;
+            const h = w;
+            const b = M.Bodies.rectangle(x, y, w, h, {
+                restitution: 0.55, friction: 0.08, frictionAir: 0.015,
+                density: 0.002, chamfer: { radius: 8 }
+            });
+            M.World.add(engine.world, b);
+            const cloneOuter = el.cloneNode(true);
+            cloneOuter.removeAttribute('id');
+            cloneOuter.className = 'kk kk-clone';
+            cloneOuter.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+            const cloneInner = cloneOuter.querySelector('.kk-inner');
+            cloneInner.classList.toggle('kk-open', Math.random() < 0.5);
+            document.body.appendChild(cloneOuter);
+            const ks = { body: b, el: cloneOuter, inner: cloneInner, isOriginal: false };
+            kkStates.push(ks);
+            return ks;
+        }
+
+        let painting = false, paintX = 0, paintY = 0;
+        const PAINT_GAP = 40;
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('mousedown', e => {
+            if (e.button !== 2) return;
+            for (const ks of kkStates) {
+                if (ks.body && ks.el) {
+                    const r = ks.el.getBoundingClientRect();
+                    if (e.pageX >= r.left + window.scrollX && e.pageX <= r.right + window.scrollX &&
+                        e.pageY >= r.top + window.scrollY && e.pageY <= r.bottom + window.scrollY) {
+                        addKKClone(ks.body.position.x, ks.body.position.y);
+                        return;
+                    }
+                }
+            }
+            painting = true; paintX = e.pageX; paintY = e.pageY;
+            addBarAt(e.pageX, e.pageY);
+        });
+        document.addEventListener('mousemove', e => {
+            if (!painting) return;
+            if ((e.pageX - paintX) ** 2 + (e.pageY - paintY) ** 2 >= PAINT_GAP ** 2) {
+                addBarAt(e.pageX, e.pageY);
+                paintX = e.pageX; paintY = e.pageY;
+            }
+        });
+        document.addEventListener('mouseup', e => {
+            if (e.button === 2) painting = false;
+        });
+
+        let rt;
+        window.addEventListener('resize', () => {
+            clearTimeout(rt); rt = setTimeout(rebuild, 150);
+        });
+        gridObs = new MutationObserver(() => {
+            document.querySelectorAll('audio:not([data-kk])').forEach(a => {
+                a.dataset.kk = '1';
+                bind(a);
+            });
+            rebuild();
+        });
+        gridObs.observe(document.getElementById('audioGrid'), {
+            childList: true, subtree: true
+        });
+
+        function loop() {
+            M.Engine.update(engine, 1000 / 60);
+            for (const ks of kkStates) {
+                if (ks.body && ks.el) {
+                    ks.el.style.transform =
+                        `translate(${ks.body.position.x - ks.el.offsetWidth / 2}px,${ks.body.position.y - ks.el.offsetHeight / 2}px) rotate(${ks.body.angle}rad)`;
+                }
+            }
+            requestAnimationFrame(loop);
+        }
+
+        document.getElementById('startBtn').addEventListener('click', function start() {
+            started = true;
+            el.style.display = 'block';
+            barStates.push({ x: window.innerWidth - 100, y: window.scrollY + window.innerHeight - 180 });
+            rebuild();
+            loop();
+            const n = audioDataList.length;
+            if (n > 0) {
+                const parts = audioDataList[n - 1].date.split(" ");
+                this.textContent = `截至${parts[0]} ${parts[2]}，已收录${n}条雅音`;
+            }
+            this.style.cursor = 'default';
+            this.style.pointerEvents = 'none';
+        });
+    })();
 
     /* =========================================================
        倒放相关状态

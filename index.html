@@ -1,44 +1,29 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 视口控制，确保移动端正确缩放 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>千音雅集 - 如听仙乐耳暂明</title>
-
-    <!-- 站点图标 -->
     <link rel="icon" type="image/png" href="images/favicon.webp">
-
-    <!-- 样式表 -->
     <link rel="stylesheet" href="css/style.css">
-
-    <!--
-       预加载背景图
-       浏览器发现此标签时会尽早发起图片请求，减少白屏时间
-       as="image" 告知浏览器这是一个图片资源
-    -->
+    <script src="js/matter.js"></script>
     <link rel="prefetch" href="images/bg.webp" as="image">
 </head>
 <body>
-
-    <!--
-       页面头部
-       h1  : 站点名称，点击触发全部正放
-       p   : 副标题，点击触发全部倒放
-    -->
     <header>
         <h1 id="playAllBtn">千音雅集</h1>
         <p id="reverseAllBtn">如听仙乐耳暂明</p>
+        <button id="startBtn">截至xxxx年xx月xx日 xx:xx，已收录0条雅音</button>
+        <p id="stageDisplay">空丨谷丨足丨音</p>
     </header>
-
-    <!-- 音频卡片网格，由 JavaScript 动态填充 -->
     <main class="grid-container" id="audioGrid"></main>
-
-    <!-- 页脚 -->
-    <footer>© 2026 千音雅集</footer>
-
-    <!-- JavaScript 入口 -->
+    <footer>© 2026 千音雅集 All Rights Reserved.</footer>
+    <div id="kk" class="kk">
+      <div id="kk-inner" class="kk-inner">
+        <img id="kk-close" class="kk-img-close" src="images/kk-close.webp" alt="" draggable="false">
+        <img id="kk-open" class="kk-img-open" src="images/kk-open.webp" alt="" draggable="false">
+      </div>
+    </div>
     <script src="js/main.js"></script>
-
 </body>
 </html>
