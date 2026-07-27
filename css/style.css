@@ -3,16 +3,6 @@
  * 设计风格：毛玻璃（Glassmorphism）+ 全屏背景图
  */
 
-/* ---------- 字体 ---------- */
-/* STZhongsong（华文中宋）为站点标题使用的装饰性字体 */
-@font-face {
-    font-family: "STZhongsong";
-    src: url("../fonts/STZhongsong.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;   /* 字体加载期间优先使用后备字体显示文字，避免 FOIT（Flash of Invisible Text） */
-}
-
 /* ---------- 全局禁止选中 ---------- */
 * { user-select: none; }
 
@@ -25,7 +15,7 @@
 
 /* ---------- 页面主体 ---------- */
 body {
-    font-family: "STZhongsong", "PingFang SC", "Microsoft YaHei", "Songti SC", serif;
+    font-family: "PingFang SC", "Microsoft YaHei", "Songti SC", serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
