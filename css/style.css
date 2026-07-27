@@ -38,8 +38,22 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: url("../images/bg.webp") no-repeat center center fixed;
     background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* ---------- 背景模糊遮罩 ---------- */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.12);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* ---------- 页面头部 ---------- */
